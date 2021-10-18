@@ -1,0 +1,79 @@
+cumulus@LeafC:mgmt:~$ net show configuration commands
+net del all
+net add dns nameserver ipv4 10.0.2.3 vrf mgmt
+net add time ntp server 0.cumulusnetworks.pool.ntp.org iburst
+net add time ntp server 1.cumulusnetworks.pool.ntp.org iburst
+net add time ntp server 2.cumulusnetworks.pool.ntp.org iburst
+net add time ntp server 3.cumulusnetworks.pool.ntp.org iburst
+net add time ntp source eth0
+net add snmp-server listening-address localhost
+net add bgp autonomous-system 65000
+net add interface swp1-2 ospf network point-to-point
+net add interface swp1-2 pim
+net add loopback lo pim
+net add routing defaults datacenter
+net add routing log syslog informational
+net add routing service integrated-vtysh-config
+net add pim rp 12.12.12.12 224.0.0.0/4
+net add vrf TENANT20 vni 20010
+net add bgp neighbor 2.2.2.1 remote-as internal
+net add bgp neighbor 2.2.2.2 remote-as internal
+net add bgp l2vpn evpn  neighbor 2.2.2.1 activate
+net add bgp l2vpn evpn  neighbor 2.2.2.2 activate
+net add bgp l2vpn evpn  advertise-all-vni
+net add bgp vrf TENANT20 autonomous-system 65000
+net add ospf router-id 1.1.1.3
+net add ospf passive-interface default
+net del ospf passive-interface swp1
+net del ospf passive-interface swp2
+net add ospf network 1.1.1.3/32 area 0.0.0.0
+net add ospf network 10.10.10.16/30 area 0.0.0.0
+net add ospf network 10.10.10.20/30 area 0.0.0.0
+net add time zone Etc/UTC
+net add ptp global slave-only no
+net add ptp global priority1 255
+net add ptp global priority2 255
+net add ptp global domain-number 0
+net add ptp global logging-level 5
+net add ptp global path-trace-enabled no
+net add ptp global use-syslog yes
+net add ptp global verbose no
+net add ptp global summary-interval 0
+net add ptp global time-stamping
+net add vxlan vni20010 vxlan id 20010
+net add vxlan vni92010 vxlan id 92010
+net add bridge bridge ports vni92010,swp5,vni20010
+net add bridge bridge vids 200,2010
+net add bridge bridge vlan-aware
+net add interface eth0 ip address 192.168.137.26/24
+net add interface eth0 vrf mgmt
+net add interface swp1 ip address 10.10.10.17/30
+net add interface swp1-2,5 mtu 1500
+net add interface swp2 ip address 10.10.10.21/30
+net add interface swp5 alias host_g_vni-92010
+net add interface swp5 bridge access 2010
+net add loopback lo ip address 1.1.1.3/32
+net add vlan 200 vlan-id 200
+net add vlan 200 vlan-raw-device bridge
+net add vlan 200 vrf TENANT20
+net add vlan 2010 hwaddress 00:01:00:01:00:01
+net add vlan 2010 ip address 172.16.10.254/24
+net add vlan 2010 vlan-id 2010
+net add vlan 2010 vlan-raw-device bridge
+net add vlan 2010 vrf TENANT20
+net add vrf mgmt ip address 127.0.0.1/8
+net add vrf mgmt ipv6 address ::1/128
+net add vrf mgmt,TENANT20 vrf-table auto
+net add vxlan vni20010 bridge access 200
+net add vxlan vni20010,92010 stp bpduguard
+net add vxlan vni20010,92010 stp portbpdufilter
+net add vxlan vni20010,92010 vxlan local-tunnelip 1.1.1.3
+net add vxlan vni92010 bridge access 2010
+net add vxlan vni92010 bridge learning off
+net add vxlan vni92010 vxlan mcastgrp 239.0.20.10
+net add dot1x radius accounting-port 1813
+net add dot1x eap-reauth-period 0
+net add dot1x default-dacl-preauth-filename default_preauth_dacl.rules
+net add dot1x radius authentication-port 1812
+net add dot1x mab-activation-delay 30
+net commit
